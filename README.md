@@ -8,7 +8,8 @@ Python3.6
 
 > - 准备好知乎问题的id，如https://www.zhihu.com/question/**22719537** 最后的八位数字；
 > - 运行login.py，模拟登陆，获取cookies;
-> - 运行zhihuQA,输入问题id和需要的答案个数；
-> - 回车，Done!；
+> - 运行zhihuQA，输入问题id和需要的答案个数；
+> - 回车，完成!；
+
 
 渣渣电脑，测试了一次性抓500个答案，都在10s左右。
