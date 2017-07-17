@@ -23,7 +23,6 @@ requests.packages.urllib3.disable_warnings()
 创建时间(原文链接)
 """
 print("#"*10+"GO"+"#"*10)
-start = time.time()
 
 os.system("python loginZH.py")
 
@@ -49,7 +48,7 @@ if isLogin() != True:
 print("已经登录，成功载入cookies!\n")
 
 print("开始抓取答案")
-
+start = time.time()
 
 # 请求头，直接复制Chrome的。
 headers = {
@@ -104,26 +103,18 @@ for data in answers_data:
     question     = "[{}]({})".format(title, question_url)
     author_info  ="作者：[{}]({})".format(author, author_url)
 
-    try:
-        with open("{}--前{}个回答.md".format(title,A_num), 'a', encoding="utf8") as f:
-            print(question,
-                  '\n----------\n',
-                  author_info, upvote,
-                  content,
-                  answer_time,
-                  answer_url,
-                  '\n\n',
-                  file=f)
-        f.close()
-    except UnicodeEncodeError:
-        content = html2text.html2text(data['content'])
-        with open("{}--前{}个回答.md".format(title,A_num), 'a', encoding="utf8") as f:
-            print(content,
-                  answer_time,
-                  answer_url,
-                  '\n\n',
-                  file=f)
+    with open("{}--前{}个回答.md".format(title,A_num), 'a', encoding="utf8") as f:
+        print(question,
+              '\n----------\n',
+              author_info, upvote,
+              content,
+              answer_time,
+              answer_url,
+              '\n\n',
+              file=f)
     n += 1
+    percent = round(n / A_num, 2)*100
+    print("正在抓取第{}个答案..{}%".format(n, percent))
     if n >= A_num:
         break
     else:
