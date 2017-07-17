@@ -4,7 +4,6 @@
 #by xchaoinfo
 url https://github.com/xchaoinfo/fuck-login
 """
-
 import requests
 try:
     import cookielib
@@ -13,7 +12,6 @@ except:
 import re
 import time
 import os.path
-import termcolor
 try:
     from PIL import Image
 except:
@@ -21,7 +19,7 @@ except:
 
 
 # 构造 Request headers
-agent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.98 Safari/537.36"
+agent = 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Mobile Safari/537.36'
 headers = {
     "Host": "www.zhihu.com",
     "Referer": "https://www.zhihu.com/",
@@ -56,16 +54,16 @@ def get_captcha():
     r = session.get(captcha_url, headers=headers)
     with open('captcha.jpg', 'wb') as f:
         f.write(r.content)
+        f.close()
     # 用pillow 的 Image 显示验证码
     # 如果没有安装 pillow 到源代码所在的目录去找到验证码然后手动输入
     try:
         im = Image.open('captcha.jpg')
-        print('查看后关闭验证码图片进行输入。')
         im.show()
-
+        im.close()
     except:
         print(u'请到 %s 目录找到captcha.jpg 手动输入' % os.path.abspath('captcha.jpg'))
-    captcha = input("请输入验证码\n>")
+    captcha = input("please input the captcha\n>")
     return captcha
 
 
@@ -119,37 +117,10 @@ def login(secret, account):
     session.cookies.save()
 
 
-# 颜色log
-class Logging:
-    flag = True
-
-    @staticmethod
-    def error(msg):
-        if Logging.flag == True:
-            print("".join(  [ termcolor.colored("ERROR", "red"), ": ", termcolor.colored(msg, "white") ] ))
-    @staticmethod
-    def warn(msg):
-        if Logging.flag == True:
-            print("".join(  [ termcolor.colored("WARN", "yellow"), ": ", termcolor.colored(msg, "white") ] ))
-    @staticmethod
-    def info(msg):
-        # attrs=['reverse', 'blink']
-        if Logging.flag == True:
-            print("".join(  [ termcolor.colored("INFO", "magenta"), ": ", termcolor.colored(msg, "white") ] ))
-    @staticmethod
-    def debug(msg):
-        if Logging.flag == True:
-            print("".join(  [ termcolor.colored("DEBUG", "magenta"), ": ", termcolor.colored(msg, "white") ] ))
-    @staticmethod
-    def success(msg):
-        if Logging.flag == True:
-            print("".join(  [ termcolor.colored("SUCCES", "green"), ": ", termcolor.colored(msg, "white") ] ))
-
-
 if __name__ == '__main__':
     if isLogin():
         print('您已经登录')
     else:
-        account = input("请输入你的用户名\n>  ")
+        account = input('请输入你的用户名\n>  ')
         secret = input("请输入你的密码\n>  ")
         login(secret, account)
