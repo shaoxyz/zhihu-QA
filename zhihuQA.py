@@ -2,15 +2,15 @@
 
 # ID: zhihuQA.py
 # By: github.com/Shaw-lib
-# At: 2017/7/10
+# At: 2017/7/17
 
 # sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf8') #改变标准输出的默认编码
-
 import json
 import time
 import http.cookiejar
 import requests, html2text
 from itertools import chain
+from loginZH import *
 import os
 
 # 用以取消requests认证警告
@@ -91,7 +91,7 @@ for page_now in range(start_num + 1):
 # 计数器
 n = 0
 # 逐个输出答案并保存。
-for data in self.get_data():
+for data in answers_data:
     title        = data['question']['title']
     question_url = "http://www.zhihu.com/question/{}".format(data['question']['id'])
     author       = data['author']['name']
@@ -105,7 +105,7 @@ for data in self.get_data():
     author_info  ="作者：[{}]({})".format(author, author_url)
 
     try:
-        with open("/mark/{}--前{}个回答.md".format(title,A_num), 'a') as f:
+        with open("{}--前{}个回答.md".format(title,A_num), 'a', encoding="utf8") as f:
             print(question,
                   '\n----------\n',
                   author_info, upvote,
@@ -116,8 +116,8 @@ for data in self.get_data():
                   file=f)
         f.close()
     except UnicodeEncodeError:
-        content = html2text.html2text(data['content']).encode('gbk', errors="replace").decode('gbk')
-        with open("/mark/{}--前{}个回答.md".format(title,A_num), 'a') as f:
+        content = html2text.html2text(data['content'])
+        with open("{}--前{}个回答.md".format(title,A_num), 'a', encoding="utf8") as f:
             print(content,
                   answer_time,
                   answer_url,
@@ -129,7 +129,6 @@ for data in self.get_data():
     else:
         continue
 
-start = time.time()
 
 end = time.time()
 cost = round(end - start)
