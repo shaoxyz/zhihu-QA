@@ -10,7 +10,7 @@ import time
 import http.cookiejar
 import requests, html2text
 from itertools import chain
-from loginZH import *
+from loginZH import login
 import os
 
 # 用以取消requests认证警告
@@ -42,7 +42,7 @@ except:
     raise Exception("cookies载入失败，请检查login")
 
 if isLogin() != True:
-    Logging.error(u"你的身份信息已经失效，请重新生成身份信息( `python LoginZH.py` )。")
+    print(u"你的身份信息已经失效，请重新生成身份信息( `python LoginZH.py` )。")
     raise Exception("无权限(403)")
 
 print("已经登录，成功载入cookies!\n")
